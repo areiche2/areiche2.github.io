@@ -1670,6 +1670,9 @@ this.wordle.bundle = function(e) {
                             a.classList.add("one-and-a-half"))
                         } else
                             (a = ls.content.cloneNode(!0).firstElementChild).classList.add(1 === e.length ? "half" : "one");
+                        if (['e','v','i','l'].includes(e)){
+                            a.style="color:red";
+                        }
                         s.appendChild(a)
                     }
                     )),
