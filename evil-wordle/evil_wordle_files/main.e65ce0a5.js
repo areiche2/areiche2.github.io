@@ -392,8 +392,10 @@ this.wordle.bundle = function(e) {
                 mode: "open"
             });
             var o = JSON.parse(window.localStorage.getItem(j))
-              , r = window.matchMedia("(prefers-color-scheme: dark)").matches
+              //, r = window.matchMedia("(prefers-color-scheme: dark)").matches
+              , r = true
               , i = JSON.parse(window.localStorage.getItem(S));
+            
             return !0 === o || !1 === o ? e.setDarkTheme(o) : r && e.setDarkTheme(!0),
             !0 !== i && !1 !== i || e.setColorBlindTheme(i),
             e
