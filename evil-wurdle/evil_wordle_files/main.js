@@ -247,6 +247,12 @@ this.wurdle.bundle = function(e) {
             console.log('\t...');
         }
     }
+    function evilLocalStorageGet(e) {
+        return window.localStorage.getItem("evil-" + e);
+    }
+    function evilLocalStorageSet(e, o) {
+        window.localStorage.setItem("evil-" + e, o);
+    }
     var v = function(e) {
         r(t, e);
         var a = h(t);
@@ -445,10 +451,10 @@ this.wurdle.bundle = function(e) {
             e.attachShadow({
                 mode: "open"
             });
-            var o = JSON.parse(window.localStorage.getItem(j))
+            var o = JSON.parse(evilLocalStorageGet(j))
               //, r = window.matchMedia("(prefers-color-scheme: dark)").matches
               , r = true
-              , i = JSON.parse(window.localStorage.getItem(S));
+              , i = JSON.parse(evilLocalStorageGet(S));
             
             return !0 === o || !1 === o ? e.setDarkTheme(o) : r && e.setDarkTheme(!0),
             !0 !== i && !1 !== i || e.setColorBlindTheme(i),
@@ -460,15 +466,16 @@ this.wurdle.bundle = function(e) {
                 var a = document.querySelector("body");
                 e && !a.classList.contains("nightmode") ? a.classList.add("nightmode") : a.classList.remove("nightmode"),
                 this.isDarkTheme = e,
-                window.localStorage.setItem(j, JSON.stringify(e))
+                evilLocalStorageSet(j, JSON.stringify(e))
             }
         }, {
             key: "setColorBlindTheme",
             value: function(e) {
+                console.log("Color blind")
                 var a = document.querySelector("body");
                 e && !a.classList.contains("colorblind") ? a.classList.add("colorblind") : a.classList.remove("colorblind"),
                 this.isColorBlindTheme = e,
-                window.localStorage.setItem(S, JSON.stringify(e))
+                evilLocalStorageSet(S, JSON.stringify(e))
             }
         }, {
             key: "connectedCallback",
@@ -1062,17 +1069,17 @@ this.wurdle.bundle = function(e) {
         hardMode: !1
     };
     function za() {
-        var e = window.localStorage.getItem(wa) || JSON.stringify(xa);
+        var e = evilLocalStorageGet(wa) || JSON.stringify(xa);
         return JSON.parse(e)
     }
     function ja(e) {
         var a = za();
         !function(e) {
-            window.localStorage.setItem(wa, JSON.stringify(e))
+            evilLocalStorageSet(wa, JSON.stringify(e))
         }(va(a, e))
     }
     var Sa = document.createElement("template");
-    Sa.innerHTML = '\n  <style>\n  .setting {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    border-bottom: 1px solid var(--color-tone-4);\n    padding: 16px 0;\n  }\n\n  a, a:visited {\n    color: var(--color-tone-2);\n  }\n\n  .title {\n    font-size: 18px;\n  }\n  .text {\n    padding-right: 8px;\n  }\n  .description {\n    font-size: 12px;\n    color: var(--color-tone-2);\n  }\n\n  #footnote {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    padding: 16px;\n    color: var(--color-tone-2);\n    font-size: 12px;\n    text-align: right;\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-end;\n  }\n\n  #privacy-policy,\n  #copyright {\n    text-align: left;\n  }\n\n  @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {\n    .setting {\n      padding: 16px;\n    }\n  }\n\n  </style>\n  <div class="sections">\n    <section>\n      <div class="setting">\n        <div class="text">\n          <div class="title">Hard Mode</div>\n          <div class="description">Any revealed hints must be used in subsequent guesses</div>\n        </div>\n        <div class="control">\n          <game-switch id="hard-mode" name="hard-mode"></game-switch>\n        </div>\n      </div>\n      <div class="setting">\n        <div class="text">\n          <div class="title">Dark Theme</div>\n        </div>\n        <div class="control">\n          <game-switch id="dark-theme" name="dark-theme"></game-switch>\n        </div>\n      </div>\n      <div class="setting">\n        <div class="text">\n          <div class="title">Color Blind Mode</div>\n          <div class="description">High contrast colors</div>\n        </div>\n        <div class="control">\n          <game-switch id="color-blind-theme" name="color-blind-theme"></game-switch>\n        </div>\n      </div>\n    </section>\n\n    <section>\n      <div class="setting">\n        <div class="text">\n          <div class="title">Feedback</div>\n        </div>\n        <div class="control">\n          <a href="mailto:happy.koala5960@fastmail.com?subject=Feedback" title="happy.koala5960@fastmail.com">Email</a>\n          \n        </div>\n      </div>\n    </section>\n';
+    Sa.innerHTML = '\n  <style>\n  .setting {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    border-bottom: 1px solid var(--color-tone-4);\n    padding: 16px 0;\n  }\n\n  a, a:visited {\n    color: var(--color-tone-2);\n  }\n\n  .title {\n    font-size: 18px;\n  }\n  .text {\n    padding-right: 8px;\n  }\n  .description {\n    font-size: 12px;\n    color: var(--color-tone-2);\n  }\n\n  #footnote {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    padding: 16px;\n    color: var(--color-tone-2);\n    font-size: 12px;\n    text-align: right;\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-end;\n  }\n\n  #privacy-policy,\n  #copyright {\n    text-align: left;\n  }\n\n  @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {\n    .setting {\n      padding: 16px;\n    }\n  }\n\n  </style>\n  <div class="sections">\n    <section>\n      <div class="setting">\n        <div class="text">\n          <div class="title">Hard Mode</div>\n          <div class="description">Any revealed hints must be used in subsequent guesses</div>\n        </div>\n        <div class="control">\n          <game-switch id="hard-mode" name="hard-mode"></game-switch>\n        </div>\n      </div>\n      <div class="setting">\n        <div class="text">\n          <div class="title">Dark Theme</div>\n        </div>\n        <div class="control">\n          <game-switch id="dark-theme" name="dark-theme"></game-switch>\n        </div>\n      </div>\n      <div class="setting">\n        <div class="text">\n          <div class="title">Color Blind Mode</div>\n          <div class="description">High contrast colors</div>\n        </div>\n        <div class="control">\n          <game-switch id="color-blind-theme" name="color-blind-theme"></game-switch>\n        </div>\n      </div>\n    </section>\n\n    <section>\n      <div class="setting">\n        <div class="text">\n          <div class="title">Feedback</div>\n        </div>\n        <div class="control">\n          <a href="mailto:happy.koala5960@fastmail.com?subject=Feedback" title="happy.koala5960@fastmail.com">Email</a>\n          \n        </div>\n      </div>\n    </section>\n  </div>\n  <div id="footnote">\n    <div>\n   </div>\n    <div>\n      <div id="puzzle-number"></div>\n      <div id="hash"></div>\n    </div>\n  </div>\n';
     var _a = function(e) {
         r(t, e);
         var a = h(t);
@@ -1244,7 +1251,7 @@ this.wurdle.bundle = function(e) {
         averageGuesses: 0
     };
     function Xa() {
-        var e = window.localStorage.getItem(Ya) || JSON.stringify(Ua);
+        var e = evilLocalStorageGet(Ya) || JSON.stringify(Ua);
         return JSON.parse(e)
     }
     function Va(e) {
@@ -1267,7 +1274,7 @@ this.wurdle.bundle = function(e) {
         }
         ), 0) / o.gamesWon),
         function(e) {
-            window.localStorage.setItem(Ya, JSON.stringify(e))
+            evilLocalStorageSet(Ya, JSON.stringify(e))
         }(o)
     }
     var Ka = document.createElement("template");
@@ -2083,8 +2090,8 @@ this.wurdle.bundle = function(e) {
                               , t = e.rowIndex
                               , o = e.isHardMode
                               , n = e.isWin
-                              , r = JSON.parse(window.localStorage.getItem(j))
-                              , i = JSON.parse(window.localStorage.getItem(S))
+                              , r = JSON.parse(evilLocalStorageGet(j))
+                              , i = JSON.parse(evilLocalStorageGet(S))
                               , l = "EVIL WURDLE ".concat(s);
                             l += " ".concat(n ? t : "X", "/").concat(6),
                             o && (l += "*");
