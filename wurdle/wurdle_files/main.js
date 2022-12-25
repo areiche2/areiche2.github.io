@@ -193,6 +193,60 @@ this.wurdle.bundle = function(e) {
     }
     var k = document.createElement("template");
     k.innerHTML = "\n<style>\n  :host {\n    display: inline-block;\n  }\n  .tile {\n    width: 100%;\n    display: inline-flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 2rem;\n    line-height: 2rem;\n    font-weight: bold;\n    vertical-align: middle;\n    box-sizing: border-box;\n    color: var(--tile-text-color);\n    text-transform: uppercase;\n    user-select: none;\n  }\n  .tile::before {\n    content: '';\n    display: inline-block;\n    padding-bottom: 100%;\n  }\n\n  /* Allow tiles to be smaller on small screens */\n  @media (max-height: 600px) {\n    .tile {\n      font-size: 1em;\n      line-height: 1em;\n    }\n  }\n\n  .tile[data-state='empty'] {\n    border: 2px solid var(--color-tone-4);\n  }\n  .tile[data-state='tbd'] {\n    background-color: var(--color-tone-7);\n    border: 2px solid var(--color-tone-3);\n    color: var(--color-tone-1);\n  }\n  .tile[data-state='correct'] {\n    background-color: var(--color-correct);\n  }\n  .tile[data-state='present'] {\n    background-color: var(--color-present);\n  }\n  .tile[data-state='absent'] {\n    background-color: var(--color-absent);\n  }\n\n  .tile[data-animation='pop'] {\n    animation-name: PopIn;\n    animation-duration: 100ms;\n  }\n\n  @keyframes PopIn {\n    from {\n      transform: scale(0.8);\n      opacity: 0;\n    }\n\n    40% {\n      transform: scale(1.1);\n      opacity: 1;\n    }\n  }\n  .tile[data-animation='flip-in'] {\n    animation-name: FlipIn;\n    animation-duration: 250ms;\n    animation-timing-function: ease-in;\n  }\n  @keyframes FlipIn {\n    0% {\n      transform: rotateX(0);\n    }\n    100% {\n      transform: rotateX(-90deg);\n    }\n  }\n  .tile[data-animation='flip-out'] {\n    animation-name: FlipOut;\n    animation-duration: 250ms;\n    animation-timing-function: ease-in;\n  }\n  @keyframes FlipOut {\n    0% {\n      transform: rotateX(-90deg);\n    }\n    100% {\n      transform: rotateX(0);\n    }\n  }\n</style>\n<div class=\"tile\" data-state=\"empty\" data-animation=\"idle\"></div>\n";
+    function matches(e, a) {
+        for (var s = Array(a.length).fill(Oa), t = Array(a.length).fill(!0), o = Array(a.length).fill(!0), n = 0; n < e.length; n++)
+            e[n] === a[n] && o[n] && (s[n] = Ma,
+            t[n] = !1,
+            o[n] = !1);
+        for (var r = 0; r < e.length; r++) {
+            var i = e[r];
+            if (t[r])
+                for (var l = 0; l < a.length; l++) {
+                    var d = a[l];
+                    if (o[l] && i === d) {
+                        s[r] = Ia,
+                        o[l] = !1;
+                        break
+                    }
+                }
+        }
+        return s
+    }
+    function arraysEqual(a, b) {
+        if (a === b) return true;
+        if (a == null || b == null) return false;
+        if (a.length !== b.length) return false;
+        for (var i = 0; i < a.length; ++i) {
+          if (a[i] !== b[i]) return false;
+        }
+        return true;
+      }
+    function getCandidates(guesses, state, n){
+        var candidates = [];
+        for (var i = 0 ; i < allWords.length ; ++i){
+            var t = allWords[i];
+            for (var j = 0 ; j < n; ++j){
+                if (!arraysEqual(matches(guesses[j],t),state[j])) {
+                    break;
+                }
+            }
+            if (j === n) {
+                candidates.push(t);
+            }
+        }
+        candidates.sort();
+        return candidates;
+    }
+    function candidateMessage(candidates , lastWord){
+        var nMax = 10;
+        console.log(`Number of possibilities after ${lastWord}:  ${candidates.length}`);
+        candidates.slice(0,nMax).forEach(
+            c => console.log(`\t${c}`)
+        )
+        if (candidates.length > nMax){
+            console.log('\t...');
+        }
+    }
     var v = function(e) {
         r(t, e);
         var a = h(t);
@@ -1120,6 +1174,7 @@ this.wurdle.bundle = function(e) {
       , Ia = "present"
       , Ma = "correct"
       , Oa = "absent";
+    var allWords = Ta.concat(La);
     var Ra = {
         unknown: 0,
         absent: 1,
@@ -1469,6 +1524,11 @@ this.wurdle.bundle = function(e) {
                     e.$keyboard.letterEvaluations = e.letterEvaluations,
                     e.rowIndex < 6 && (e.canInput = !0);
                     var s = e.$board.querySelectorAll("game-row")[e.rowIndex - 1];
+                    var lastTile = (a.path || a.composedPath && a.composedPath()).includes(s);
+                    if (lastTile && e.gameStatus != "WIN") {
+                        var candidates = getCandidates(e.boardState, e.evaluations, e.rowIndex);
+                        candidateMessage(candidates, e.boardState[e.rowIndex-1]);
+                    }
                     (a.path || a.composedPath && a.composedPath()).includes(s) && ([es, as].includes(e.gameStatus) && (e.restoringFromLocalStorage ? e.showStatsModal() : (e.gameStatus === es && (s.setAttribute("win", ""),
                     e.addToast(ss[e.rowIndex - 1], 2e3)),
                     e.gameStatus === as && e.addToast(e.solution.toUpperCase(), 1 / 0),
