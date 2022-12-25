@@ -220,7 +220,10 @@ this.wurdle.bundle = function(e) {
           if (a[i] !== b[i]) return false;
         }
         return true;
-      }
+    }
+    function randomElem(arr) {
+        return !arr ? null : arr[Math.floor(arr.length * Math.random())];
+    }
     function getCandidates(guesses, state, n){
         var candidates = [];
         for (var i = 0 ; i < allWords.length ; ++i){
@@ -245,6 +248,9 @@ this.wurdle.bundle = function(e) {
         )
         if (candidates.length > nMax){
             console.log('\t...');
+        }
+        if (candidates.length > 0) {
+            console.log(`Random choice: ${randomElem(candidates)}`)
         }
     }
     var v = function(e) {
