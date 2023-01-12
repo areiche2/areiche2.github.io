@@ -4,19 +4,15 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
     <title>Wurdle Classic</title>
+    <link rel="icon" type="image/x-icon" href="/wurdle/images/wurdle-favicon.ico">
     <meta name="description" content="Wordle as it was on 2022-01-31">
-
-
     <meta name="theme-color" content="#6aaa64">
-
     <style>
         /* Global Styles & Colors */
-        
-         :root {
+
+        :root {
             --green: #6aaa64;
             --darkendGreen: #538d4e;
             --yellow: #c9b458;
@@ -35,9 +31,10 @@
             --keyboard-height: 200px;
             --game-max-width: 500px;
         }
+
         /* Light theme colors */
-        
-         :root {
+
+        :root {
             --color-tone-1: #1a1a1b;
             --color-tone-2: #787c7e;
             --color-tone-3: #878a8c;
@@ -47,8 +44,9 @@
             --color-tone-7: #ffffff;
             --opacity-50: rgba(255, 255, 255, 0.5);
         }
+
         /* Dark Theme Colors */
-        
+
         .nightmode {
             --color-tone-1: #d7dadc;
             --color-tone-2: #818384;
@@ -59,14 +57,15 @@
             --color-tone-7: #121213;
             --opacity-50: rgba(0, 0, 0, 0.5);
         }
+
         /* Constant colors and colors derived from theme */
-        
-         :root,
+
+        :root,
         .nightmode {
             --color-background: var(--color-tone-7);
         }
-        
-         :root {
+
+        :root {
             --color-present: var(--yellow);
             --color-correct: var(--green);
             --color-absent: var(--color-tone-2);
@@ -79,7 +78,7 @@
             --key-bg-absent: var(--color-absent);
             --modal-content-bg: var(--color-tone-7);
         }
-        
+
         .nightmode {
             --color-present: var(--darkendYellow);
             --color-correct: var(--darkendGreen);
@@ -93,7 +92,7 @@
             --key-bg-absent: var(--color-absent);
             --modal-content-bg: var(--color-tone-7);
         }
-        
+
         .colorblind {
             --color-correct: var(--orange);
             --color-present: var(--blue);
@@ -102,11 +101,11 @@
             --key-bg-correct: var(--color-correct);
             --key-bg-absent: var(--color-absent);
         }
-        
+
         html {
             height: 100%;
         }
-        
+
         body {
             height: 100%;
             background-color: var(--color-background);
@@ -121,7 +120,7 @@
 <body class="nightmode">
     <script async="" src="./wurdle_files/js"></script>
     <script>
-        (function() {
+        (function () {
             // Defining the hash before the main bundle allows the bundle access window.hash
             window.wordle = window.wordle || {};
             window.wordle.hash = '';
@@ -129,8 +128,6 @@
     </script>
     <script src="./wurdle_files/main.js"></script>
     <game-app></game-app>
-
-
 </body>
 
 </html>
