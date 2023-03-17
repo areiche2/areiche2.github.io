@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Decode base64 to JSON</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+	<style>
+		body {
+			font-size: 18px;
+			margin: 0;
+			padding: 0;
+			margin: 20px;
+		}
+
+		h1 {
+			font-size: 36px;
+			margin: 20px 0;
+			text-align: center;
+		}
+
+		label {
+			display: block;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		textarea,
+		button {
+			display: block;
+			margin-bottom: 20px;
+			padding: 10px;
+			font-size: 18px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			width: 100%;
+			resize: vertical;
+		}
+
+		button {
+			background-color: #4CAF50;
+			color: white;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #3e8e41;
+		}
+
+		#output {
+			margin-top: 20px;
+			padding: 10px;
+			background-color: #f9f9f9;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			white-space: pre-wrap;
+		}
+	</style>
+	<script>
+		function decodeBase64() {
+			var input = document.getElementById("base64-input").value.trim();
+			try {
+				var decoded = atob(input);
+				var parsed = JSON.parse(decoded);
+				var formatted = JSON.stringify(parsed, null, 2);
+				document.getElementById("output").innerHTML = formatted;
+				hljs.highlightBlock(document.getElementById("output"));
+
+				// Update URL with 'base64' query parameter
+				var url = new URL(window.location.href);
+				url.searchParams.set("base64", input);
+				history.pushState({}, null, url);
+			} catch (err) {
+				document.getElementById("output").innerHTML = "Error: " + err.message;
+			}
+		}
+
+		// Load text from 'base64' query parameter on page load
+		window.addEventListener("load", function () {
+			var url = new URL(window.location.href);
+			var base64 = url.searchParams.get("base64");
+			if (base64) {
+				document.getElementById("base64-input").value = base64;
+				decodeBase64();
+			}
+		});
+		function copyToClipboard() {
+			var json = document.getElementById("output").textContent;
+			navigator.clipboard.writeText(json);
+		}
+	</script>
+</head>
+
+<body>
+	<h1>Decode base64 JSON</h1>
+	<label for="base64-input">Enter base64 encoded text:</label>
+	<textarea id="base64-input" rows="10" cols="50"></textarea>
+	<button onclick="decodeBase64()">Decode</button>
+	<pre><code id="output"></code></pre>
+	<button onclick="copyToClipboard()">Click to Copy</button>
+</body>
+
+</html>
